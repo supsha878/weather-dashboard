@@ -1,0 +1,44 @@
+body {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgb(223, 223, 223);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+header {
+    flex: 0 0 100%;
+    color: white;
+    text-align: center;
+    background-color: slateblue;
+}
+
+aside {
+    background-color: maroon;
+    flex: 0 0 30%;
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input {
+    padding: 1%;
+}
+
+ul {
+    list-style: none;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    flex: 0 0 70%;
+}
+
+section {
+    background-color: forestgreen;
+    flex: 0 0 100%;
+}
