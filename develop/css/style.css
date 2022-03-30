@@ -7,7 +7,7 @@
 body {
     display: flex;
     flex-wrap: wrap;
-    background-color: rgb(223, 223, 223);
+    background-color: rgb(233, 233, 233);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -19,7 +19,6 @@ header {
 }
 
 aside {
-    background-color: maroon;
     flex: 0 0 30%;
     text-align: center;
 }
@@ -61,8 +60,8 @@ ul {
     border-top: solid 1px black;
     list-style: none;
     padding: 0 2% 0 2%;
-    margin-left: 2%;
-    margin-right: 2%;
+    margin-left: 3%;
+    margin-right: 3%;
 }
 
 ul button {
