@@ -1,3 +1,9 @@
+:root {
+    --main-color: rgb(45, 111, 211);
+    --light-accent-color: rgb(131, 176, 243);
+    --dark-accent-color: rgb(25, 12, 71);
+}
+
 body {
     display: flex;
     flex-wrap: wrap;
@@ -9,7 +15,7 @@ header {
     flex: 0 0 100%;
     color: white;
     text-align: center;
-    background-color: slateblue;
+    background-image: linear-gradient(to right, var(--main-color), var(--dark-accent-color));
 }
 
 aside {
@@ -24,12 +30,50 @@ form {
     align-items: center;
 }
 
+form h2 {
+    text-align: start;
+}
+
 input {
     padding: 1%;
+    width: 80%;
+}
+
+button {
+    border: none;
+    border-radius: 5px;
+    padding: 1%;
+    margin-top: 3%;
+    width: 80%;
+    background-color: var(--main-color);
+    color: white;
+}
+
+button:hover {
+    background-color: var(--light-accent-color);
+}
+
+button:active {
+    border: solid 3px black;
 }
 
 ul {
+    border-top: solid 1px black;
     list-style: none;
+    padding: 0 2% 0 2%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+ul button {
+    width: 90%;
+    background-color: rgb(173, 173, 173);
+    color: rgb(95, 95, 95);
+}
+
+ul button:hover {
+    background-color: rgb(95, 95, 95);
+    color: rgb(173, 173, 173);
 }
 
 main {
