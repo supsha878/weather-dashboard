@@ -1,10 +1,12 @@
 // global variables
-var cityHistory = [];
+var cityHistory;
+var mainVisible = false;
 
 // content elements
 var historyEl = document.getElementById("history");
 
 // current weather block
+var mainEl = document.getElementById("main");
 var cityEl = document.getElementById("city");
 var dateEl = document.getElementById("date");
 var iconEl = document.getElementById("icon");
@@ -29,7 +31,11 @@ init();
 
 // functions
 function init() {
+    mainEl.style.visibility = "hidden";
     cityHistory = JSON.parse(localStorage.getItem("history"));
+    if (!cityHistory) {
+        cityHistory = [];
+    }
     appendHistory();
 }
 
@@ -47,6 +53,9 @@ async function searchWeather(event) {
     }
     addHistory(targetCity);
     getWeather(targetCity);
+    if (!mainVisible) {
+        mainEl.style.visibility = "unset";
+    }
 }
 
 function getGeo(cityName) {
@@ -169,6 +178,9 @@ function historyWeather(event) {
         targetCity = cityHistory[index];
         addHistory(targetCity);
         getWeather(targetCity);
+        if (!mainVisible) {
+            mainEl.style.visibility = "unset";
+        }
     }
 }
 
