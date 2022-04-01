@@ -1,6 +1,5 @@
 // global variables
-var history = [];
-var historyIndex = 0;
+var cityHistory = [];
 
 // content elements
 var historyEl = document.getElementById("history");
@@ -20,27 +19,40 @@ var forecastEl = document.getElementById("5-day");
 var inputEl = document.getElementById("city-input");
 var searchEl = document.getElementById("search");
 
+// event listeners
 searchEl.addEventListener("click", searchWeather);
+historyEl.addEventListener("click", historyWeather);
 
-// main function - TODO split up into multiple
+
+// initialize page
+init();
+
+// functions
+function init() {
+    cityHistory = JSON.parse(localStorage.getItem("history"));
+    appendHistory();
+}
+
+// main function
 async function searchWeather(event) {
     event.preventDefault();
-    if (!inputEl.value) {
+    var userInput = inputEl.value;
+    inputEl.value = "";
+    if (!userInput) {
         return;
     }
-
     //TODO content reset
-    forecastEl.textContent = "";
-
-    var targetCity = await getGeo(inputEl.value);
-    history.push(targetCity);
+    var targetCity = await getGeo(userInput);
+    if (!targetCity) {
+        return;
+    }
     // Append to history TODO figure out order-- weather then history?
-    addHistory();
+    addHistory(targetCity);
     getWeather(targetCity);
 }
 
-
 function getGeo(cityName) {
+
     var requestGeoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
 
     // retrieves name, latitude, and longitude from API
@@ -64,9 +76,6 @@ function getGeo(cityName) {
 }
 
 function getWeather(targetCity) {
-    if (!targetCity) { // TODO make sure this works still array->object
-        return;
-    }
     var requestWeatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + targetCity.lat + "&lon=" + targetCity.lon + "&units=imperial&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
     
     fetch(requestWeatherURL)
@@ -74,7 +83,6 @@ function getWeather(targetCity) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
             appendCurrWeather(data.current, targetCity.name);
             append5Day(data.daily);
         });
@@ -83,7 +91,7 @@ function getWeather(targetCity) {
 function appendCurrWeather(current, name) {
     cityEl.textContent = name;
     dateEl.textContent = moment().format("M/D/YYYY");
-    iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + current.weather[0].icon + "@2x.png")
+    iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + current.weather[0].icon + ".png")
     iconEl.setAttribute("alt", current.weather[0].description);
     tempEl.textContent = "Temp: " + current.temp + "°F";
     windEl.textContent = "Wind: " + current.wind_speed + "MPH";
@@ -92,6 +100,7 @@ function appendCurrWeather(current, name) {
 }
 
 function append5Day(daily) {
+    forecastEl.textContent = "";
     for (i = 0; i < 5; i++) {
         var newDiv = document.createElement("div");
         newDiv.classList.add("forecast-card");
@@ -100,7 +109,7 @@ function append5Day(daily) {
         newDate.textContent = moment().add(i + 1, "d").format("M/D/YYYY");
 
         var newIcon = document.createElement("img");
-        newIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + "@2x.png")
+        newIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png")
         newIcon.setAttribute("alt", daily[i].weather[0].description);
 
         var newTemp = document.createElement("p");
@@ -117,33 +126,56 @@ function append5Day(daily) {
     }
 }
 
-
-function addHistory() {
-    /* check if object exists? --line 67 TODO
-
-    Check if its in history already, if it is move it to the top
-
-    create button within li and attach to historyEl
-    add index for event listener purposes
-
-    
-    index++
-    
-    */
+function addHistory(targetCity) {
+    for (i = 0; i < cityHistory.length; i++) {
+        if (targetCity.name === cityHistory[i].name) {
+            targetCity = cityHistory.splice(i, 1)[0];
+            i = cityHistory.length;
+        }
+    }
+    if (cityHistory.length === 7) {
+        cityHistory.shift();
+    }
+    cityHistory.push(targetCity);
+    localStorage.setItem("history", JSON.stringify(cityHistory));
+    appendHistory();
 }
 
-function addHistory(name, lat, lon) {
-    var newLi = document.createElement("li");
-    var newButton = document.createElement("button");
-    newButton.textContent = name;
-    newButton.setAttribute("lat", lat);
-    newButton.setAttribute("lon", lon);
-    newLi.append(newButton);
-    historyEl.append(newLi);
-    // TODO local storage
-    // TODO use objects to store
-    // check array before adding etc etc
+function appendHistory() {
+    historyEl.textContent = "";
+    for (i = cityHistory.length - 1; i >= 0; i--) {
+        var newLi = document.createElement("li");
+
+        var newButton = document.createElement("button");
+        newButton.textContent = cityHistory[i].name;
+        newButton.setAttribute("index", i);
+
+        newLi.append(newButton);
+        historyEl.append(newLi);
+    }
 }
+
+function historyWeather(event) {
+    if (event.target.matches("button")) {
+        var index = event.target.getAttribute("index");
+        targetCity = cityHistory[index];
+        addHistory(targetCity);
+        getWeather(targetCity);
+    }
+}
+
+// function addHistory(name, lat, lon) {
+//     var newLi = document.createElement("li");
+//     var newButton = document.createElement("button");
+//     newButton.textContent = name;
+//     newButton.setAttribute("lat", lat);
+//     newButton.setAttribute("lon", lon);
+//     newLi.append(newButton);
+//     historyEl.append(newLi);
+//     // TODO local storage
+//     // TODO use objects to store
+//     // check array before adding etc etc
+// }
 
 
 // WHEN I view future weather conditions for that city
