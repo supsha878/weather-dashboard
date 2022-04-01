@@ -8,6 +8,10 @@
         <!-- <link rel="stylesheet" href="./develop/css/reset.css" /> -->
         <link rel="stylesheet" href="./develop/css/normalize.css" />
         <link rel="stylesheet" href="./develop/css/style.css" />
+        <script
+          type="text/javascript"
+          src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js"
+        ></script>
     </head>
 
     <body>
@@ -27,14 +31,17 @@
         <main>
             <section>
                 <h2 id="city"></h2>
+                <h2 id="date"></h2>
+                <img id="icon" src="" alt="">
                 <p id="temperature"></p>
                 <p id="wind"></p>
                 <p id="humidity"></p>
                 <p id="UV-index"></p>
             </section>
 
-            <section id="5-day">
+            <section>
                 <h3>5-Day Forecast:</h3>
+                <div id="5-day"></div>
             </section>
         </main>
 

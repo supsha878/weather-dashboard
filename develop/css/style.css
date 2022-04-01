@@ -85,3 +85,7 @@ section {
     background-color: forestgreen;
     flex: 0 0 100%;
 }
+
+.forecast-card {
+    background-color: palevioletred;
+}
