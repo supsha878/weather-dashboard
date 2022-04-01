@@ -10,6 +10,9 @@
 1. Wrote basic HTML structure
 1. Wrote basic CSS
 1. Implement data retrieval using fetch requests.
+1. Implement data appending
+1. Implement search history and retreival of search history.
+1. Implement local storage use.
 
 ## Deployment
 

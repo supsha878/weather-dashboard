@@ -21,7 +21,7 @@
         <aside>
             <form>
                 <label><h2>Search for a City:</h2></label>
-                <input id="city-input" placeholder="Los Angeles">
+                <input id="city-input" placeholder="San Francisco">
                 <button id="search">Search</button>
             </form>
             <ul id="history"></ul>
@@ -29,18 +29,19 @@
 
         <main>
             <section>
-                <h2 id="city"></h2>
-                <h2 id="date"></h2>
-                <img id="icon" src="" alt="">
-                <p id="temperature"></p>
-                <p id="wind"></p>
-                <p id="humidity"></p>
-                <p id="UV-index"></p>
+                <div id="current">
+                    <h2><span id="city"></span><span id="date"></span></h2>
+                    <img id="icon" src="" alt="">
+                    <p>Temp: <span id="temperature"></span></p>
+                    <p>Wind: <span id="wind"></span></p>
+                    <p>Humidity: <span id="humidity"></span></p>
+                    <p>UV Index: <span id="UV-index"></span></p>
+                </div>
             </section>
 
             <section>
                 <h3>5-Day Forecast:</h3>
-                <div id="5-day"></div>
+                <div id="forecast"></div>
             </section>
         </main>
 

@@ -1,13 +1,18 @@
 :root {
     --main-color: rgb(45, 111, 211);
     --light-accent-color: rgb(131, 176, 243);
-    --dark-accent-color: rgb(25, 12, 71);
+    --dark-accent-color: rgb(32, 18, 82);
+    --light-gray: rgb(219, 219, 219);
+    --med-gray: rgb(201, 201, 201);
+    --dark-gray: rgb(153, 153, 153);
+    --darkest-gray: rgb(63, 63, 63);
 }
 
 body {
+    max-width: 100%;
     display: flex;
     flex-wrap: wrap;
-    background-color: rgb(233, 233, 233);
+    background-color: var(--med-gray);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -57,7 +62,7 @@ button:active {
 }
 
 ul {
-    border-top: solid 1px black;
+    border-top: solid 1px var(--darkest-gray);
     list-style: none;
     padding: 0 2% 0 2%;
     margin-left: 3%;
@@ -66,26 +71,87 @@ ul {
 
 ul button {
     width: 90%;
-    background-color: rgb(173, 173, 173);
-    color: rgb(95, 95, 95);
+    background-color: var(--dark-gray);
+    color: var(--darkest-gray);
 }
 
 ul button:hover {
-    background-color: rgb(95, 95, 95);
-    color: rgb(173, 173, 173);
+    background-color: var(--darkest-gray);
+    color: var(--dark-gray);
 }
 
 main {
     display: flex;
     flex-wrap: wrap;
-    flex: 0 0 70%;
+    flex: 0 0 66%;
 }
 
 section {
-    background-color: forestgreen;
     flex: 0 0 100%;
+    padding: 3% 3% 0 3%;
+}
+
+main + section {
+    padding-bottom: 0;
+    background-color: aqua;
+}
+
+section ~ section {
+    padding-top: 0;
+    padding-bottom: 3%;
+}
+
+#current {
+    border: solid 2px var(--darkest-gray);
+    border-radius: 5px;
+    background-color: var(--light-gray);
+    padding: 2%;
+    position: relative;
+}
+
+#current h2 {
+    margin: 0;
+    display: inline-block;
+}
+
+#current img {
+    position: absolute;
+    top: 12px;
+}
+
+
+/* // favorable 2>, moderate 3-7, or severe 8<  TODO */
+.favorable {
+    background-color: rgb(2, 70, 2);
+    color: white;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.moderate {
+    background-color: rgb(165, 128, 5);
+    color: white;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+.severe {
+    background-color: rgb(124, 26, 8);
+    color: white;
+    border-radius: 3px;
+    padding: 5px;
+}
+
+#forecast {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .forecast-card {
-    background-color: palevioletred;
+    flex: 0 0 15%;
+    padding: 1%;
+    background-color: var(--dark-accent-color);
+    color: white;
+    border-radius: 5px;
 }

@@ -13,7 +13,7 @@ var windEl = document.getElementById("wind");
 var humidEl = document.getElementById("humidity");
 var uvEl = document.getElementById("UV-index");
 
-var forecastEl = document.getElementById("5-day");
+var forecastEl = document.getElementById("forecast");
 
 // form elements
 var inputEl = document.getElementById("city-input");
@@ -41,12 +41,10 @@ async function searchWeather(event) {
     if (!userInput) {
         return;
     }
-    //TODO content reset
     var targetCity = await getGeo(userInput);
     if (!targetCity) {
         return;
     }
-    // Append to history TODO figure out order-- weather then history?
     addHistory(targetCity);
     getWeather(targetCity);
 }
@@ -89,21 +87,31 @@ function getWeather(targetCity) {
 }
 
 function appendCurrWeather(current, name) {
-    cityEl.textContent = name;
+    cityEl.textContent = name + " ";
     dateEl.textContent = moment().format("M/D/YYYY");
     iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + current.weather[0].icon + ".png")
     iconEl.setAttribute("alt", current.weather[0].description);
-    tempEl.textContent = "Temp: " + current.temp + "°F";
-    windEl.textContent = "Wind: " + current.wind_speed + "MPH";
-    humidEl.textContent = "Humidity: " + current.humidity + "%";
-    uvEl.textContent = "UV Index: " + current.uvi;
+
+    tempEl.textContent = current.temp + "°F";
+    windEl.textContent = current.wind_speed + "MPH";
+    humidEl.textContent = current.humidity + "%";
+
+    uvNum = current.uvi;
+    uvEl.textContent = uvNum;
+    if (uvNum < 3) {
+        uvEl.className = "favorable";
+    } else if (uvNum >= 3 && uvNum <= 7) {
+        uvEl.className = "moderate";
+    } else {
+        uvEl.className = "severe";
+    }
 }
 
 function append5Day(daily) {
     forecastEl.textContent = "";
     for (i = 0; i < 5; i++) {
         var newDiv = document.createElement("div");
-        newDiv.classList.add("forecast-card");
+        newDiv.className = "forecast-card";
 
         var newDate = document.createElement("h3");
         newDate.textContent = moment().add(i + 1, "d").format("M/D/YYYY");
@@ -133,7 +141,7 @@ function addHistory(targetCity) {
             i = cityHistory.length;
         }
     }
-    if (cityHistory.length === 7) {
+    if (cityHistory.length === 10) {
         cityHistory.shift();
     }
     cityHistory.push(targetCity);
@@ -163,24 +171,6 @@ function historyWeather(event) {
         getWeather(targetCity);
     }
 }
-
-// function addHistory(name, lat, lon) {
-//     var newLi = document.createElement("li");
-//     var newButton = document.createElement("button");
-//     newButton.textContent = name;
-//     newButton.setAttribute("lat", lat);
-//     newButton.setAttribute("lon", lon);
-//     newLi.append(newButton);
-//     historyEl.append(newLi);
-//     // TODO local storage
-//     // TODO use objects to store
-//     // check array before adding etc etc
-// }
-
-
-// WHEN I view future weather conditions for that city
-// THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-
 
 // icon URL http://openweathermap.org/img/wn/{}@2x.png
 
