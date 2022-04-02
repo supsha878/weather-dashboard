@@ -60,7 +60,7 @@ async function searchWeather(event) {
 
 function getGeo(cityName) {
 
-    var requestGeoURL = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
+    var requestGeoURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
 
     // retrieves name, latitude, and longitude from API
     return fetch(requestGeoURL)
