@@ -3,10 +3,11 @@ var cityHistory;
 var mainVisible = false;
 
 // content elements
-var historyEl = document.getElementById("history");
-
-// current weather block
 var mainEl = document.getElementById("main");
+var historyEl = document.getElementById("history");
+var forecastEl = document.getElementById("forecast");
+
+// current weather elements
 var cityEl = document.getElementById("city");
 var dateEl = document.getElementById("date");
 var iconEl = document.getElementById("icon");
@@ -14,8 +15,6 @@ var tempEl = document.getElementById("temperature");
 var windEl = document.getElementById("wind");
 var humidEl = document.getElementById("humidity");
 var uvEl = document.getElementById("UV-index");
-
-var forecastEl = document.getElementById("forecast");
 
 // form elements
 var inputEl = document.getElementById("city-input");
@@ -25,11 +24,12 @@ var searchEl = document.getElementById("search");
 searchEl.addEventListener("click", searchWeather);
 historyEl.addEventListener("click", historyWeather);
 
-
 // initialize page
 init();
 
 // functions
+
+// initialize function
 function init() {
     mainEl.style.visibility = "hidden";
     cityHistory = JSON.parse(localStorage.getItem("history"));
@@ -44,25 +44,35 @@ async function searchWeather(event) {
     event.preventDefault();
     var userInput = inputEl.value;
     inputEl.value = "";
+
+    // validates input
     if (!userInput) {
         return;
     }
+
+    // first data retrieval
     var targetCity = await getGeo(userInput);
+    // validate returned object
     if (!targetCity) {
         return;
     }
+
+    // adds city to history
     addHistory(targetCity);
+    // second data retrieval
     getWeather(targetCity);
+
     if (!mainVisible) {
         mainEl.style.visibility = "unset";
     }
 }
 
+// retrieves geo data to locate lat & lon
 function getGeo(cityName) {
 
     var requestGeoURL = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
 
-    // retrieves name, latitude, and longitude from API
+    // retrieves name, latitude, and longitude and returns as object
     return fetch(requestGeoURL)
         .then(function (response) {
             return response.json();
@@ -82,6 +92,7 @@ function getGeo(cityName) {
         });
 }
 
+// retrieves weather data using lat & lon from earlier fetch
 function getWeather(targetCity) {
     var requestWeatherURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + targetCity.lat + "&lon=" + targetCity.lon + "&units=imperial&appid=64b2c0c672fd03d5a6f0b210f2de7e71";
     
@@ -95,6 +106,7 @@ function getWeather(targetCity) {
         });
 }
 
+// appends current day's weather, and sets safety class for UV index
 function appendCurrWeather(current, name) {
     cityEl.textContent = name + " ";
     dateEl.textContent = moment().format("M/D/YYYY");
@@ -116,6 +128,7 @@ function appendCurrWeather(current, name) {
     }
 }
 
+// appends 5 day forecast using forloop
 function append5Day(daily) {
     forecastEl.textContent = "";
     for (i = 0; i < 5; i++) {
@@ -143,21 +156,26 @@ function append5Day(daily) {
     }
 }
 
+// adds successfully searched city to history list
 function addHistory(targetCity) {
+    // checks if city has already been searched
     for (i = 0; i < cityHistory.length; i++) {
         if (targetCity.name === cityHistory[i].name) {
             targetCity = cityHistory.splice(i, 1)[0];
             i = cityHistory.length;
         }
     }
+    // keeps cities stored at or below 10
     if (cityHistory.length === 10) {
         cityHistory.shift();
     }
     cityHistory.push(targetCity);
+    // store history list in local storage
     localStorage.setItem("history", JSON.stringify(cityHistory));
     appendHistory();
 }
 
+// appends history list to page
 function appendHistory() {
     historyEl.textContent = "";
     for (i = cityHistory.length - 1; i >= 0; i--) {
@@ -172,6 +190,7 @@ function appendHistory() {
     }
 }
 
+// accesses data of an already searched city and appends it to the page
 function historyWeather(event) {
     if (event.target.matches("button")) {
         var index = event.target.getAttribute("index");
@@ -183,23 +202,3 @@ function historyWeather(event) {
         }
     }
 }
-
-// icon URL http://openweathermap.org/img/wn/{}@2x.png
-
-
-
-// fetch("https://api.openweathermap.org/data/2.5/onecall?lat=47.6038321&lon=-122.3300624&units=imperial&appid=64b2c0c672fd03d5a6f0b210f2de7e71")
-//     .then(function (response) {
-//         return response.json();
-//     })
-//     .then(function (data) {
-//         console.log(data);
-//     })
-
-// API: 64b2c0c672fd03d5a6f0b210f2de7e71
-
-
-// API Call: https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&units=imperial&appid={API key}
-
-
-// Geo Call: http://api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
