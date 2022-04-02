@@ -98,7 +98,7 @@ function getWeather(targetCity) {
 function appendCurrWeather(current, name) {
     cityEl.textContent = name + " ";
     dateEl.textContent = moment().format("M/D/YYYY");
-    iconEl.setAttribute("src", "http://openweathermap.org/img/wn/" + current.weather[0].icon + ".png")
+    iconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + current.weather[0].icon + ".png")
     iconEl.setAttribute("alt", current.weather[0].description);
 
     tempEl.textContent = current.temp + "°F";
