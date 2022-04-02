@@ -126,7 +126,7 @@ function append5Day(daily) {
         newDate.textContent = moment().add(i + 1, "d").format("M/D/YYYY");
 
         var newIcon = document.createElement("img");
-        newIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png")
+        newIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + daily[i].weather[0].icon + ".png")
         newIcon.setAttribute("alt", daily[i].weather[0].description);
 
         var newTemp = document.createElement("p");
